@@ -28,9 +28,8 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
+        child: SingleChildScrollView(
+          child: 
             Column(
               children: [
                 const Padding(padding: EdgeInsets.only(top: 100)),
@@ -105,25 +104,40 @@ class _RegisterPageState extends State<RegisterPage> {
                     _icon('apple'),
                     _icon('facebook'),
                   ],
-                )
+                ),
+                const SizedBox(height: 30,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already hava account? "),
+                    GestureDetector(
+                      onTap: () => NavigatorUtil.push(context, LoginPage()),
+                      child: Text(
+                        "Sign In", 
+                        style: TextStyle(color: ColorUtil.commonBlue(), fontWeight: FontWeight.w700),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20,)
               ]
             ),
-            Positioned(
-              bottom: 10,
-              child: Row(
-                children: [
-                  Text("Already hava account? "),
-                  GestureDetector(
-                    onTap: () => NavigatorUtil.push(context, LoginPage()),
-                    child: Text(
-                      "Sign In", 
-                      style: TextStyle(color: ColorUtil.commonBlue(), fontWeight: FontWeight.w700),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
+            // Positioned(
+            //   bottom: 10,
+            //   child: Row(
+            //     children: [
+            //       Text("Already hava account? "),
+            //       GestureDetector(
+            //         onTap: () => NavigatorUtil.push(context, LoginPage()),
+            //         child: Text(
+            //           "Sign In", 
+            //           style: TextStyle(color: ColorUtil.commonBlue(), fontWeight: FontWeight.w700),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // )
+          
         ),
       ),
     );

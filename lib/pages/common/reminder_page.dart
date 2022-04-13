@@ -14,25 +14,28 @@ class ReminderPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(imgUrl, height: 140, width: 140,),
-                Padding(
-                  padding: EdgeInsets.only(top: 30, bottom: 8),
-                  child: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30, right: 30),
-                  child: Center(child: Text(content),)
-                )
-              ],
-            ),
-            if (btnText != null && btnCallback != null) CommonButton(buttonText: btnText!, callback: btnCallback!),
-          ]
-        ),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(imgUrl, height: 140, width: 140,),
+                  Padding(
+                    padding: EdgeInsets.only(top: 30, bottom: 8),
+                    child: Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30, right: 30),
+                    child: Center(child: Text(content),)
+                  )
+                ],
+              ),
+              if (btnText != null && btnCallback != null) CommonButton(buttonText: btnText!, callback: btnCallback!),
+            ]
+          ),
+        )
       )
     );
   }

@@ -49,7 +49,7 @@ class _PlaceBidState extends State<PlaceBid> {
             ),
           ),
           CommonButton(buttonText: 'Place Bid', callback: _handleDialog),
-          SizedBox(height: MediaQuery.of(context).padding.bottom,),
+          SizedBox(height: 10 + MediaQuery.of(context).padding.bottom,),
         ]
       )
     );
