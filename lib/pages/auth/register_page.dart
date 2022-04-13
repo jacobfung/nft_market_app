@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:nft_market/http/api.dart';
-import 'package:nft_market/pages/login_page.dart';
-import 'package:nft_market/pages/verification_page.dart';
+import 'package:nft_market/pages/auth/login_page.dart';
+import 'package:nft_market/pages/auth/verification_page.dart';
 import 'package:nft_market/utils/color_util.dart';
 import 'package:nft_market/utils/navigator_util.dart';
 import 'package:nft_market/widget/common_button.dart';

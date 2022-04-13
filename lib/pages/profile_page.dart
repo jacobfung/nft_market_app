@@ -1,6 +1,6 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
-import 'package:nft_market/pages/login_page.dart';
+import 'package:nft_market/pages/auth/login_page.dart';
 import 'package:nft_market/utils/navigator_util.dart';
 import 'package:nft_market/widget/common_button.dart';
 

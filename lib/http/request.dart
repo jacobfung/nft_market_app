@@ -6,13 +6,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class Request {
   // 通过获取缓存判断是否物理设备 切换访问的mock url
   static final bool _isPhysical = SpUtil.getBool("isPhysical", defValue: false)!;
+  // 以下mock为个人本地搭建 可自行使用apifox进行自定义配置
   static String baseUrl = _isPhysical ? 'http://192.168.2.115:4523/mock/829140' : 'http://127.0.0.1:4523/mock/829140';
 
   // 配置 Dio 实例
   static final BaseOptions _options = BaseOptions(
     baseUrl: baseUrl,
     connectTimeout: 5000,
-    receiveTimeout: 3000,
+    receiveTimeout: 5000,
   );
   // 创建 Dio 实例
   static final Dio _dio = Dio(_options);
@@ -71,26 +72,17 @@ class Request {
 
   // 处理 Dio 异常
   static String _dioError(DioError error) {
-    print(error);
     switch (error.type) {
       case DioErrorType.connectTimeout:
         return "网络连接超时，请检查网络设置";
-        break;
       case DioErrorType.receiveTimeout:
         return "服务器异常，请稍后重试！";
-        break;
       case DioErrorType.sendTimeout:
         return "网络连接超时，请检查网络设置";
-        break;
       case DioErrorType.response:
         return "服务器异常，请稍后重试！";
-        break;
       case DioErrorType.cancel:
         return "请求已被取消，请重新请求";
-        break;
-      case DioErrorType.sendTimeout:
-        return "网络异常，请稍后重试！";
-        break;
       default:
         return "Dio异常";
     }

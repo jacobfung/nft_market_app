@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:nft_market/http/api.dart';
 import 'package:nft_market/http/request.dart';
 import 'package:nft_market/pages/main_app.dart';
-import 'package:nft_market/pages/register_page.dart';
+import 'package:nft_market/pages/auth/register_page.dart';
 import 'package:nft_market/utils/color_util.dart';
 import 'package:nft_market/utils/navigator_util.dart';
 import 'package:nft_market/widget/common_button.dart';

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_verification_box/verification_box.dart';
+import 'package:nft_market/pages/auth/login_page.dart';
 import 'package:nft_market/pages/main_app.dart';
-import 'package:nft_market/pages/reminder_page.dart';
+import 'package:nft_market/pages/common/reminder_page.dart';
 import 'package:nft_market/utils/color_util.dart';
 import 'package:nft_market/utils/navigator_util.dart';
 import 'package:nft_market/widget/common_button.dart';
+import 'package:nft_market/widget/verification_box.dart';
 
 class VerificationPage extends StatefulWidget {
   final String email;
@@ -52,7 +53,7 @@ class _VerificationPageState extends State<VerificationPage> {
                     imgUrl: 'assets/images/created.png',
                     btnText: 'Confirm',
                     btnCallback: () {
-                      NavigatorUtil.push(context, MainApp());
+                      NavigatorUtil.pushAndRemoveAll(context, LoginPage());
                     },
                   )
                 );

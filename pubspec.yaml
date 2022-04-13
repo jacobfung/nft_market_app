@@ -29,7 +29,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_verification_box: ^2.0.0
   dio: ^4.0.6
   flutter_easyloading: ^3.0.3
   flustars: ^2.0.1

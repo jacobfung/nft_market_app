@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nft_market/modal/home_modal.dart';
-import 'package:nft_market/pages/reminder_page.dart';
+import 'package:nft_market/pages/common/reminder_page.dart';
 import 'package:nft_market/utils/color_util.dart';
 import 'package:nft_market/utils/navigator_util.dart';
 import 'package:nft_market/widget/common_button.dart';
