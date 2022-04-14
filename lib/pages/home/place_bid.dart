@@ -166,7 +166,7 @@ class _PlaceBidState extends State<PlaceBid> {
   }
 
   _handleDialog() async {
-    bool? delete = await showBidDialog();
+    await showBidDialog();
   }
 
   Future<bool?> showBidDialog() {
@@ -207,9 +207,12 @@ class _PlaceBidState extends State<PlaceBid> {
                 const SizedBox(height: 24,),
                 GestureDetector(
                   onTap: () {
+                    if (!_isAgree) return;
                     NavigatorUtil.push(context, ReminderPage(
-                      btnText: '',
-                      btnCallback: (){},
+                      btnText: 'View Item',
+                      btnCallback: (){
+                        Navigator.pop(context);
+                      },
                       title: 'Place a bid Success', 
                       content: 'You have successfully bid on the item and it will be on the list', 
                       imgUrl: 'assets/images/created.png'),
