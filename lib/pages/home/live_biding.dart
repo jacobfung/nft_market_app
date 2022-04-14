@@ -6,7 +6,8 @@ import 'package:nft_market/utils/color_util.dart';
 import 'package:nft_market/utils/navigator_util.dart';
 
 class LiveBiding extends StatefulWidget {
-  const LiveBiding({ Key? key }) : super(key: key);
+  List<BidingGoods> bidingGoodsList = [];
+  LiveBiding({ Key? key, required this.bidingGoodsList }) : super(key: key);
 
   @override
   _LiveBidingState createState() => _LiveBidingState();
@@ -48,10 +49,10 @@ class _LiveBidingState extends State<LiveBiding> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: BidingGoods.bidingGoodsList.length,
+              itemCount: widget.bidingGoodsList.length,
               padding: const EdgeInsets.fromLTRB(40, 12, 40, 20),
               itemBuilder: (BuildContext context, int index) {
-                return _bidingItem(BidingGoods.bidingGoodsList[index], index);
+                return _bidingItem(widget.bidingGoodsList[index], index);
               },
             ),
           )
@@ -82,7 +83,7 @@ class _LiveBidingState extends State<LiveBiding> {
         children: [
           Hero(
             tag: 'hero$index',
-            child: Image.asset(goods.imgPath, width: 300, height: 167,),
+            child: Image.network(goods.imgPath, width: 300, height: 167,),
           ),
           const SizedBox(height: 11,),
           Text(goods.author, style: TextStyle(color: ColorUtil.commonGrey()),),

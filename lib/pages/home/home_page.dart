@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nft_market/http/api.dart';
 import 'package:nft_market/modal/home_modal.dart';
 import 'package:nft_market/pages/home/live_biding.dart';
 import 'package:nft_market/pages/home/place_bid.dart';
@@ -13,6 +14,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<BidingGoods> bidingGoodsList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    
+    _getBidingList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +118,7 @@ class _HomePageState extends State<HomePage> {
             GestureDetector(
               onTap: () {
                 print('see all');
-                NavigatorUtil.push(context, LiveBiding());
+                NavigatorUtil.push(context, LiveBiding(bidingGoodsList: bidingGoodsList,));
               },
               child: Text('See all', style: TextStyle(color: ColorUtil.commonGrey()),),
             ),
@@ -125,10 +136,10 @@ class _HomePageState extends State<HomePage> {
       height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: BidingGoods.bidingGoodsList.length,
+        itemCount: bidingGoodsList.length,
         padding: const EdgeInsets.fromLTRB(25, 12, 25, 20),
         itemBuilder: (BuildContext context, int index) {
-          return _bidingItem(BidingGoods.bidingGoodsList[index], index);
+          return _bidingItem(bidingGoodsList[index], index);
         },
       ),
     );
@@ -155,7 +166,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Hero(
             tag: 'hero$index',
-            child: Image.asset(goods.imgPath, width: 236, height: 130,),
+            child: Image.network(goods.imgPath, width: 236, height: 130,),
           ),
           Text(goods.author, style: TextStyle(color: ColorUtil.commonGrey()),),
           Row(
@@ -297,4 +308,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _getBidingList() async {
+    try {
+      var res = await Api.getBidingList();
+      if (res['code'] != 200) return;
+      var result = BidingGoodsModel.fromJson(res['result']);
+      setState(() {
+        bidingGoodsList = result.bidingList ?? [];
+      });
+    } catch (e) {
+      print('错误 $e');
+    }
+  }
 }
+

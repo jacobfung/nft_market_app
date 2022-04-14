@@ -6,7 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 class Request {
   // 通过获取缓存判断是否物理设备 切换访问的mock url
   static final bool _isPhysical = SpUtil.getBool("isPhysical", defValue: false)!;
-  // 以下mock为个人本地搭建 可自行使用apifox进行自定义配置
+  // 以下mock为个人本地搭建 可自行使用apifox或apipost等工具进行自定义配置
   static String baseUrl = _isPhysical ? 'http://192.168.2.115:4523/mock/829140' : 'http://127.0.0.1:4523/mock/829140';
 
   // 配置 Dio 实例

@@ -18,4 +18,9 @@ class Api {
       },
     );
   }
+  static getBidingList() async {
+    return Request.get(
+      '/liveBidingList',
+    );
+  }
 }

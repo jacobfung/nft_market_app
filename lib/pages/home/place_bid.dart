@@ -35,7 +35,7 @@ class _PlaceBidState extends State<PlaceBid> {
                       tag: 'hero${widget.index}',
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.asset(widget.goods.bigImgPath, width: 300, height: 300, fit: BoxFit.cover,),
+                        child: Image.network(widget.goods.bigImgPath, width: 300, height: 300, fit: BoxFit.cover,),
                       ),
                     ),
                     const SizedBox(height: 5,),

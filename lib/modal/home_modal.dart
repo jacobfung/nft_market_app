@@ -32,49 +32,53 @@ class Category {
   ];
 }
 
+class BidingGoodsModel {
+  List<BidingGoods>? bidingList;
+
+  BidingGoodsModel.fromJson(Map<String, dynamic> json) {
+    if (json['bidingList'] != null) {
+      bidingList = List<BidingGoods>.empty(growable: true);
+      json['bidingList'].forEach((v) {
+        bidingList!.add(BidingGoods.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (bidingList != null) {
+      data['bidingList'] = bidingList!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
 class BidingGoods {
-  String imgPath;
-  String author;
-  String title;
-  String value;
-  String timesLeft;
-  String bigImgPath;
+  late String imgPath;
+  late String author;
+  late String title;
+  late String value;
+  late String timesLeft;
+  late String bigImgPath;
 
-  BidingGoods({
-    required this.imgPath,
-    required this.bigImgPath,
-    required this.author, 
-    required this.title, 
-    required this.value, 
-    required this.timesLeft
-  });
+  BidingGoods.fromJson(Map<String, dynamic> json) {
+    imgPath = json['imgPath'];
+    author = json['author'];
+    title = json['title'];
+    value = json['value'];
+    timesLeft = json['timesLeft'];
+    bigImgPath = json['bigImgPath'];
+  }
 
-  static List<BidingGoods> bidingGoodsList = <BidingGoods>[
-    BidingGoods(
-      imgPath: 'assets/images/first_goods.png',
-      bigImgPath: 'assets/images/first_goods_big.png',
-      author: 'Shapire Cole',
-      title: 'The Astronut 321',
-      value: '0.47',
-      timesLeft: '3h 12m 36s'
-    ),
-    BidingGoods(
-      imgPath: 'assets/images/sec_goods.png',
-      bigImgPath: 'assets/images/sec_goods_big.png',
-      author: 'Golden Future',
-      title: 'The sky 565',
-      value: '0.47',
-      timesLeft: '3h 12m 36s'
-    ),
-    BidingGoods(
-      imgPath: 'assets/images/third_goods.png',
-      bigImgPath: 'assets/images/third_goods.png',
-      author: 'Shapire Cole',
-      title: 'The Astronut 321',
-      value: '0.47',
-      timesLeft: '3h 12m 36s'
-    ),
-  ];
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['imgPath'] = imgPath;
+    data['author'] = author;
+    data['title'] = title;
+    data['value'] = value;
+    data['timesLeft'] = timesLeft;
+    data['bigImgPath'] = bigImgPath;
+    return data;
+  }
 }
 class Collections {
   String imgPath;
