@@ -39,7 +39,7 @@ class _PlaceBidState extends State<PlaceBid> {
                           image: NetworkImage(widget.goods.bigImgPath),
                           placeholder: const AssetImage('assets/images/placeholder.png'),
                           width: 300, height: 300,
-                          fit: BoxFit.fill,
+                          fit: BoxFit.cover,
                         )
                       ),
                     ),
