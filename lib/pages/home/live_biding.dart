@@ -83,7 +83,12 @@ class _LiveBidingState extends State<LiveBiding> {
         children: [
           Hero(
             tag: 'hero$index',
-            child: Image.network(goods.imgPath, width: 300, height: 167,),
+            child: FadeInImage(
+              image: NetworkImage(goods.imgPath),
+              placeholder: const AssetImage('assets/images/placeholder.png'),
+              width: 300, height: 167,
+              fit: BoxFit.fill,
+            )
           ),
           const SizedBox(height: 11,),
           Text(goods.author, style: TextStyle(color: ColorUtil.commonGrey()),),

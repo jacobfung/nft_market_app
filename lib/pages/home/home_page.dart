@@ -166,7 +166,12 @@ class _HomePageState extends State<HomePage> {
         children: [
           Hero(
             tag: 'hero$index',
-            child: Image.network(goods.imgPath, width: 236, height: 130,),
+            child: FadeInImage(
+              image: NetworkImage(goods.imgPath),
+              placeholder: const AssetImage('assets/images/placeholder.png'),
+              width: 236, height: 130,
+              fit: BoxFit.fill,
+            )
           ),
           Text(goods.author, style: TextStyle(color: ColorUtil.commonGrey()),),
           Row(

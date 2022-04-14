@@ -35,7 +35,12 @@ class _PlaceBidState extends State<PlaceBid> {
                       tag: 'hero${widget.index}',
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(16),
-                        child: Image.network(widget.goods.bigImgPath, width: 300, height: 300, fit: BoxFit.cover,),
+                        child: FadeInImage(
+                          image: NetworkImage(widget.goods.bigImgPath),
+                          placeholder: const AssetImage('assets/images/placeholder.png'),
+                          width: 300, height: 300,
+                          fit: BoxFit.fill,
+                        )
                       ),
                     ),
                     const SizedBox(height: 5,),
