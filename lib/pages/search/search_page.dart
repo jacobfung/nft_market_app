@@ -17,9 +17,37 @@ class _SearchPageState extends State<SearchPage> {
   List<String> searchList = SpUtil.getStringList('recentSearchList') ?? [];
   bool isSearching = false;
 
+  static List<Map<String, dynamic>> searchResultList = [
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0fa19.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0hjlq.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0i2mj.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0i7o9.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0fa19.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0hjlq.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0i2mj.png'
+    },
+    {
+      "img": 'https://5fou.com/i/2022/04/15/p0i7o9.png'
+    },
+  ];
+
   @override
   void initState() {
     super.initState();
+    searchResult();
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) print('当前正获取焦点');
     });
@@ -38,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
       backgroundColor: ColorUtil.hexColor('ffffff'),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 10, 24, 10),
+          padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -47,15 +75,19 @@ class _SearchPageState extends State<SearchPage> {
                 children: [
                   const Text('Search', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      print('open filter');
+                      _showBottomSheet();
+                    },
                     child: Image.asset('assets/images/filter.png', width: 40, height: 40,),
                   )
                 ],
               ),
               const SizedBox(height: 35,),
               _searchInput(),
-              const SizedBox(height: 35,),
+              const SizedBox(height: 15,),
               if (!isSearching) ..._recentSearchBox()
+              else searchResult()
             ],
           ),
         ),
@@ -110,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
       const SizedBox(height: 16,),
       Expanded(
         child: ListView.builder(
-          physics: const NeverScrollableScrollPhysics(),
+          // physics: const NeverScrollableScrollPhysics(),
           itemCount: searchList.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
@@ -148,6 +180,7 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+  
   void _onSearchChange(String value) {
     print(value);
     setState(() {
@@ -174,4 +207,54 @@ class _SearchPageState extends State<SearchPage> {
     SpUtil.putStringList('recentSearchList', searchList);
     print('new $searchList');
   }
+
+  void _showBottomSheet() {
+    showModalBottomSheet(
+      context: context, 
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      builder: (BuildContext context) {
+        return Padding(
+          padding: EdgeInsets.fromLTRB(24, 8, 24, MediaQuery.of(context).padding.bottom),
+          child: Column(
+            children: [
+              Container(
+                width: 80, height: 5,
+                color: ColorUtil.hexColor('eaeff3'),
+              ),
+              const SizedBox(height: 16,),
+              const Text('Filter', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+              const SizedBox(height: 16,)
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  searchResult() {
+    List<Widget> imgWidget = searchResultList.asMap().entries.map((item) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: FadeInImage(
+          placeholder: const AssetImage('assets/images/placeholder.png'),
+          image: NetworkImage(item.value['img']),
+          fit: BoxFit.cover,
+        ),
+      );
+    }).toList();
+
+    return Expanded(
+      child: GridView(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 40,
+          crossAxisSpacing: 30
+        ),
+        padding: EdgeInsets.only(top: 20),
+        children: imgWidget,
+      )
+    );
+    
+  }
+
 }
