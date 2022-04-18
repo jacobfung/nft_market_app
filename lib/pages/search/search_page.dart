@@ -1,6 +1,7 @@
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
 import 'package:nft_market/utils/color_util.dart';
+import 'package:nft_market/widget/common_button.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({ Key? key }) : super(key: key);
@@ -10,37 +11,50 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  // input controller
   final TextEditingController _searchInputController = TextEditingController();
+  // 焦点
   final _focusNode = FocusNode();
+  // 搜索关键词
   String? keyword = '';
+  // 是否可清空input框
   bool allowClear = false;
+  // 关键词搜索历史
   List<String> searchList = SpUtil.getStringList('recentSearchList') ?? [];
+  // 是否正在搜索
   bool isSearching = false;
+  // 过滤条件list
+  static List itemFilterList = ['Assets', 'Bundles'];
+  static List statusFilterList = ['Buy Now', 'On Auction', 'New Product', 'Has Offers'];
+  static List sortFilterList = ['Recently Created', 'Most Viewed', 'Oldest', 'Low to High', 'High to Low'];
+  String itemFilter = 'Assets';
+  String statusFilter = 'Buy Now';
+  String sortFilter = 'Recently Created';
 
   static List<Map<String, dynamic>> searchResultList = [
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0fa19.png'
+      "img": 'https://s2.loli.net/2022/04/18/dsLVBGHzgCYR18v.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0hjlq.png'
+      "img": 'https://s2.loli.net/2022/04/18/yZBMmGfoRVpukTd.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0i2mj.png'
+      "img": 'https://s2.loli.net/2022/04/18/Jf8ohTmqa1tg2cY.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0i7o9.png'
+      "img": 'https://s2.loli.net/2022/04/18/BTh9tEjmbHWvrqI.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0fa19.png'
+      "img": 'https://s2.loli.net/2022/04/18/dsLVBGHzgCYR18v.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0hjlq.png'
+      "img": 'https://s2.loli.net/2022/04/18/yZBMmGfoRVpukTd.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0i2mj.png'
+      "img": 'https://s2.loli.net/2022/04/18/Jf8ohTmqa1tg2cY.png'
     },
     {
-      "img": 'https://5fou.com/i/2022/04/15/p0i7o9.png'
+      "img": 'https://s2.loli.net/2022/04/18/BTh9tEjmbHWvrqI.png'
     },
   ];
 
@@ -211,6 +225,7 @@ class _SearchPageState extends State<SearchPage> {
   void _showBottomSheet() {
     showModalBottomSheet(
       context: context, 
+      backgroundColor: ColorUtil.hexColor('ffffff'),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       builder: (BuildContext context) {
         return Padding(
@@ -223,7 +238,15 @@ class _SearchPageState extends State<SearchPage> {
               ),
               const SizedBox(height: 16,),
               const Text('Filter', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
-              const SizedBox(height: 16,)
+              const SizedBox(height: 16,),
+              _filterList(0),
+              _filterList(1),
+              _filterList(2),
+              CommonButton(buttonText: 'Apply', callback: () {
+                print('筛选条件： item: $itemFilter status: $statusFilter sort: $sortFilter');
+                Navigator.pop(context);
+                if (isSearching) print('调搜索接口');
+              })
             ],
           ),
         );
@@ -231,7 +254,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  searchResult() {
+  Widget searchResult() {
     List<Widget> imgWidget = searchResultList.asMap().entries.map((item) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -250,11 +273,108 @@ class _SearchPageState extends State<SearchPage> {
           mainAxisSpacing: 40,
           crossAxisSpacing: 30
         ),
-        padding: EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 20),
         children: imgWidget,
       )
     );
-    
+  }
+
+  Widget _filterList(int filterType) {
+    String title;
+    List filterList;
+    switch (filterType) {
+      case 0:
+        title = 'Item Type';
+        filterList = itemFilterList;
+        break;
+      case 1:
+        title = 'Status';
+        filterList = statusFilterList;
+        break;
+      case 2:
+        title = 'Sort By';
+        filterList = sortFilterList;
+        break;
+      default:
+        title = '';
+        filterList = [];
+    }
+    return FilterList(
+      title: title,
+      filterList: filterList,
+      selectdItem: filterType == 0 ? itemFilter : (filterType == 1 ? statusFilter : sortFilter),
+      onchanged: (value) {
+        setState(() {
+          if (filterType == 0) itemFilter = value;
+          if (filterType == 1) statusFilter = value;
+          if (filterType == 2) sortFilter = value;
+        });
+      },
+    );
+  }
+}
+
+class FilterList extends StatefulWidget {
+  final String title; // filter标题
+  final List filterList; //
+  final String selectdItem;
+  final ValueChanged<String> onchanged;
+  const FilterList({ Key? key, required this.title, required this.filterList, required this.onchanged, required this.selectdItem }) : super(key: key);
+
+  @override
+  _FilterListState createState() => _FilterListState();
+}
+
+class _FilterListState extends State<FilterList> {
+  String? item;
+
+  @override
+  void initState() {
+    // 初始化当前选中的筛选条件
+    item = widget.selectdItem;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(widget.title),
+        const SizedBox(height: 8,),
+        SizedBox(
+          width: 500,
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: widget.filterList.asMap().entries.map((element) {
+              return GestureDetector(
+                onTap: () {
+                  widget.onchanged(element.value);
+                  setState(() {
+                    item = element.value;
+                  });
+                },
+                child: _filterItem(element.value),
+              );
+            }).toList(),
+          ),
+        ),
+        const SizedBox(height: 16,)
+      ],
+    );
+  }
+
+  Widget _filterItem(String title) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: title == item ? ColorUtil.commonBlue() : ColorUtil.hexColor('eaeff3')),
+        color: title == item ? const Color.fromRGBO(34, 129, 227, .17) : Colors.white,
+      ),
+      child: Text(title, style: TextStyle(color: title == item ? ColorUtil.commonBlue() : ColorUtil.commonGrey()),),
+    );
   }
 
 }
