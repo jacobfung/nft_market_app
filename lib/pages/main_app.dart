@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nft_market/pages/home/home_page.dart';
 import 'package:nft_market/pages/profile_page.dart';
 import 'package:nft_market/pages/search/search_page.dart';
-import 'package:nft_market/pages/statistic_page.dart';
+import 'package:nft_market/pages/statistic/statistic_page.dart';
 import 'package:nft_market/utils/color_util.dart';
 
 class MainApp extends StatefulWidget {
