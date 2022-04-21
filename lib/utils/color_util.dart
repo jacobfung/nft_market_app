@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class ColorUtil {
-  static hexColor(String hex) {
+  static Color hexColor(String hex) {
     return Color(int.parse('0xff$hex'));
   }
 

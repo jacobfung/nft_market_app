@@ -13,6 +13,7 @@ class StatisticPage extends StatefulWidget {
 }
 
 class _StatisticPageState extends State<StatisticPage> with TickerProviderStateMixin {
+  double headerOpacity = 0.0;
   late TabController _tabController;
   String rankCate = 'All Categories';
   String rankChain = 'All Chains';
@@ -102,63 +103,94 @@ class _StatisticPageState extends State<StatisticPage> with TickerProviderStateM
       'imgUrl': 'https://s2.loli.net/2022/04/19/a2re4LYsd3ihBXu.png',
     },
   ];
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _scrollController.addListener(() {
+      _onScroll(_scrollController.offset);
+    });
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 10, 24, 0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('Statistic', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
-                  GestureDetector(
-                    onTap: () {
-                      print('search');
-                    },
-                    child: const Icon(Icons.search, size: 40,),
-                  )
-                ],
-              ),
-              _tapBar(),
-              _tabPage()
-            ],
-          ),
-        )
-      )
+      body: Column(
+        children: [
+          _header(),
+          _tapBar(),
+          _tabPage()
+        ],
+      ),
     );
   }
 
-  Widget _tapBar() {
-    return TabBar(
-      indicatorWeight: 1,
-      controller: _tabController,
-      labelPadding: const EdgeInsets.only(top: 13, bottom: 13),
-      labelColor: ColorUtil.commonBlue(),
-      unselectedLabelColor: Colors.grey,
-      indicator: UnderlineTabIndicator(
-        borderSide: BorderSide(color: ColorUtil.commonBlue(), width: 2,),
+  Widget _header() {
+    return Container(
+      padding: const EdgeInsets.only(bottom: 5),
+      decoration: BoxDecoration(
+        color: ColorUtil.hexColor('e5e5e5').withOpacity(headerOpacity),
+        borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: const Color.fromRGBO(0, 0, 0, .17).withOpacity(0.2 * headerOpacity),
+            offset: const Offset(1.1, 1.1),
+            blurRadius: 3
+          ),
+        ],
       ),
-      tabs: const [
-        Text('Rankings', style: TextStyle(fontWeight: FontWeight.w700),),
-        Text('Activity', style: TextStyle(fontWeight: FontWeight.w700),)
-      ]
+      child: Container(
+        height: 30 * (1 - headerOpacity) + 30,
+        margin: EdgeInsets.only(
+          top: MediaQuery.of(context).padding.top,
+          left: 20, right: 20
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Statistic', style: TextStyle(fontSize: 11 * (1 - headerOpacity) + 15, fontWeight: FontWeight.w700)),
+            GestureDetector(
+              onTap: () {
+                print('search');
+              },
+              child: const Icon(Icons.search, size: 30,),
+            )
+          ],
+        ),
+      ),
     );
+    
+  }
+
+  Widget _tapBar() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24),
+      child: TabBar(
+        indicatorWeight: 1,
+        controller: _tabController,
+        labelPadding: const EdgeInsets.only(top: 13, bottom: 13),
+        labelColor: ColorUtil.commonBlue(),
+        unselectedLabelColor: Colors.grey,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(color: ColorUtil.commonBlue(), width: 2,),
+        ),
+        tabs: const [
+          Text('Rankings', style: TextStyle(fontWeight: FontWeight.w700),),
+          Text('Activity', style: TextStyle(fontWeight: FontWeight.w700),)
+        ]
+      ),
+    );
+    
   }
   // 两个tab对应的页面
   Widget _tabPage() {
@@ -175,20 +207,24 @@ class _StatisticPageState extends State<StatisticPage> with TickerProviderStateM
   }
 
   Widget _switchPage(bool isRank) {
-    return Column(
-      children: [
-        const SizedBox(height: 32,),
-        Row(
-          children: [
-            _filter(isRank ? rankCate : activityCate, isRank, true),
-            const SizedBox(width: 10,),
-            _filter(isRank ? rankChain : activityChain, isRank, false),
-          ],
-        ),
-        const SizedBox(height: 10,),
-        Expanded(child: isRank ? _rankingList() : _activityList(),)
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, right: 24),
+      child: Column(
+        children: [
+          const SizedBox(height: 32,),
+          Row(
+            children: [
+              _filter(isRank ? rankCate : activityCate, isRank, true),
+              const SizedBox(width: 10,),
+              _filter(isRank ? rankChain : activityChain, isRank, false),
+            ],
+          ),
+          const SizedBox(height: 10,),
+          Expanded(child: isRank ? _rankingList() : _activityList(),)
+        ],
+      ),
     );
+    
   }
 
   Widget _filter(String recentFilter, bool isRank, bool isCate) {
@@ -260,8 +296,25 @@ class _StatisticPageState extends State<StatisticPage> with TickerProviderStateM
     );
   }
 
+  void _onScroll(double pixels) {
+    double opacity = 0.0;
+
+    if (pixels >= 40) {
+      opacity = headerOpacity;
+    } else if (pixels <= 40 && pixels >= 0 && headerOpacity != pixels / 40) {
+      opacity = pixels / 40;
+    } else if (pixels <= 0 && headerOpacity != 0.0) {
+      opacity = 0.0;
+    }
+    setState(() {
+      headerOpacity = opacity;
+    });
+
+  }
+
   Widget _rankingList() {
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         children: rankingList.asMap().entries.map((item) {
           int index = item.key;
@@ -310,7 +363,7 @@ class _StatisticPageState extends State<StatisticPage> with TickerProviderStateM
             ),
           );
         }).toList(),
-      ),
+      )
     );
   }
 
